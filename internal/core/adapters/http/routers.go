@@ -10,8 +10,14 @@ type Routers struct{}
 func (*Routers) Root() {
 	configHttp := config.Http{}
 	ginConf := configHttp.Gin()
-
+	
 	commentRouter := comment.Router{}
 	
 	commentRouter.Set(ginConf.Group("/comment"))
+	
+	ginConf.Run("localhost:" + config.Env.SERVER.PORT)
+}
+
+func (*Routers) Boot() {
+	config.LoadEnv()
 }

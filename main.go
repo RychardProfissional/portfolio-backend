@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import "github.com/RychardProfissional/portfolio-backend/internal/core/adapters/http"
 
 func main() {
-	fmt.Println("Hello World!!!")
+	routers := http.Routers{}
+	routers.Boot()
+	routers.Root()	
 }

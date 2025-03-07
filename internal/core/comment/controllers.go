@@ -18,7 +18,22 @@ func (*Controller) Create(c *gin.Context) {
 		return
 	}
 
-	
+	usecase := Usecase{}
+	validate, err := usecase.ValidateCreate(&comment)
+	if err != nil {
+		log.Print("usecase.ValidateCreate: ", err.Error())
+		c.JSON(http.StatusBadRequest,  gin.H{"error": err.Error()})
+		return
+	}
+
+	created, err := usecase.Create(validate)
+	if err != nil {
+		log.Print("usecase.Create: ", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "erro ao tentar registar no banco de dados"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, created)
 }
 
 func (*Controller) GetByID(c *gin.Context) {
