@@ -3,11 +3,12 @@ package comment
 import (
 	"errors"
 
-	"github.com/RychardProfissional/portfolio-backend/internal/core/adapters/db"
 	"github.com/google/uuid"
 )
 
-type Usecase struct{}
+type Usecase struct{
+	DB DB
+}
 
 func (*Usecase) ValidateCreate(comment *Entitie) (*Entitie, error) {
 	comment.ID = uuid.Nil
@@ -16,7 +17,7 @@ func (*Usecase) ValidateCreate(comment *Entitie) (*Entitie, error) {
 		return nil, errors.New("ip não pode estar em falta")
 	}
 
-	if *comment.ProjectID == uuid.Nil {
+	if comment.ProjectID == nil {
 		return nil, errors.New("project_id não pode estar em falta")
 	}
 
@@ -30,19 +31,15 @@ func (*Usecase) ValidateCreate(comment *Entitie) (*Entitie, error) {
 		return nil, errors.New("text não pode estar em falta")
 	}
 
+	comment.ID = uuid.Nil
+	comment.CreatedAt = nil
+	comment.UpdatedAt = nil
+
 	return comment, nil
 }
 
-func (*Usecase) Create(comment *Entitie) (*Entitie, error) {
-	dbconn := db.Connect()
-
-	model := comment.ToModel()
-	res := dbconn.Create(&model)
-	if res.Error != nil {
-		return nil, res.Error
-	}
-	
-	return model.FromModel(), nil
+func (u *Usecase) Create(comment *Entitie) (*Entitie, error) {
+	return u.DB.Create(comment)	
 }
 
 func (*Usecase) GetByID() {

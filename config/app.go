@@ -1,8 +1,28 @@
 package config
 
-import "os"
+import (
+	"log"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+
+	"github.com/lpernett/godotenv"
+)
 
 func LoadEnv() {
+	log.Print("load")
+	_, filename, _, ok := runtime.Caller(1)
+	if ok {
+		log.Print(filename)
+		envFile := filepath.Dir(filename) + "\\..\\..\\..\\..\\.env"
+		envFile = strings.ReplaceAll(envFile, "\\", "/")
+		log.Print(envFile)
+		// if _, err := os.Stat(envFile); os.IsNotExist(err) {
+			godotenv.Load(envFile)
+		// }
+	}
+
 	Env = ENV{}
 	Env.DB = db{
 		HOST: os.Getenv("DB_HOST"),

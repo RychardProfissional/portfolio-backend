@@ -10,7 +10,7 @@ import (
 )
 
 var once sync.Once
-var dbConn *gorm.DB
+var Conn *gorm.DB
 
 func Connect() (*gorm.DB) {
 	once.Do(func() {
@@ -26,7 +26,7 @@ func Connect() (*gorm.DB) {
 		if err != nil {
 			log.Fatal("erro ao conectar com banco de dados")
 		}
-		dbConn = conn
+		Conn = conn
 	})
-	return dbConn
+	return Conn
 }

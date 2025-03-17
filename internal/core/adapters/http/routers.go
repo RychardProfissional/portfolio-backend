@@ -1,7 +1,10 @@
 package http
 
 import (
+	"log"
+
 	"github.com/RychardProfissional/portfolio-backend/config"
+	"github.com/RychardProfissional/portfolio-backend/internal/core/adapters/db"
 	"github.com/RychardProfissional/portfolio-backend/internal/core/comment"
 )
 
@@ -15,9 +18,11 @@ func (*Routers) Root() {
 	
 	commentRouter.Set(ginConf.Group("/comment"))
 	
+	log.Print("Server in ", config.Env.SERVER.PORT)
 	ginConf.Run("localhost:" + config.Env.SERVER.PORT)
 }
 
 func (*Routers) Boot() {
 	config.LoadEnv()
+	db.Connect()
 }
