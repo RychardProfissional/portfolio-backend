@@ -42,22 +42,45 @@ func (u *Usecase) Create(comment *Entitie) (*Entitie, error) {
 	return u.DB.Create(comment)	
 }
 
-func (*Usecase) GetByID() {
-	// TODO
+func (u *Usecase) GetByID(id string) (*Entitie, error) {
+	return u.DB.GetByID(id)
 }
 
 func (*Usecase) GetByProjectID() {
 	// TODO
 }
 
-func (*Usecase) ValidateUpdateText() {
-	// TODO
+func (u *Usecase) ValidateUpdateText(id, ip, text string) (*Entitie, error) {
+	commentUUID, err := uuid.Parse(id)
+	if commentUUID == uuid.Nil || err != nil  {
+		return nil, errors.New("commentID invalido")
+	}
+
+	if ip == "" {
+		return nil, errors.New("ip invalido")
+	}
+
+	if text == "" {
+		return nil, errors.New("texto está vazio")
+	}
+
+	// TODO: converter para internal error
+	comment, err := u.DB.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if comment.IP != ip {
+		return nil, errors.New("ip não correspondente")
+	}	
+
+	return comment, nil
 }
 
-func (*Usecase) UpdateText() {
-	// TODO
+func (u *Usecase) UpdateText(id string, text *string) (error) {
+	return u.DB.UpdateText(id, text)
 }
 
-func (*Usecase) Delete() {
-	// TODO
+func (u *Usecase) Delete(id string) error {
+	return u.DB.Delete(id)
 }

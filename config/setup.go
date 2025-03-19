@@ -1,11 +1,11 @@
 package config
 
 type ENV struct {
-	DB     db
-	SERVER server
+	DB     DB
+	SERVER SERVER
 }
 
-type db struct {
+type DB struct {
 	HOST    string
 	USER    string
 	PASS    string
@@ -14,6 +14,6 @@ type db struct {
 	SSLMODE string
 }
 
-type server struct {
+type SERVER struct {
 	PORT string
 }

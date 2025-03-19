@@ -1,30 +1,16 @@
 package config
 
 import (
-	"log"
 	"os"
-	"path/filepath"
-	"runtime"
-	"strings"
 
 	"github.com/lpernett/godotenv"
 )
 
 func LoadEnv() {
-	log.Print("load")
-	_, filename, _, ok := runtime.Caller(1)
-	if ok {
-		log.Print(filename)
-		envFile := filepath.Dir(filename) + "\\..\\..\\..\\..\\.env"
-		envFile = strings.ReplaceAll(envFile, "\\", "/")
-		log.Print(envFile)
-		// if _, err := os.Stat(envFile); os.IsNotExist(err) {
-			godotenv.Load(envFile)
-		// }
-	}
+	godotenv.Load()
 
 	Env = ENV{}
-	Env.DB = db{
+	Env.DB = DB{
 		HOST: os.Getenv("DB_HOST"),
 		USER: os.Getenv("DB_USER"),
 		PASS: os.Getenv("DB_PASS"),
@@ -33,7 +19,7 @@ func LoadEnv() {
 		SSLMODE: os.Getenv("DB_SSLMODE"),
 	}
 
-	Env.SERVER = server{}
+	Env.SERVER = SERVER{}
 	Env.SERVER.PORT = os.Getenv("SYS_PORT")
 	if Env.SERVER.PORT == "" {
 		Env.SERVER.PORT = "8080"
