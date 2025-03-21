@@ -1,4 +1,4 @@
-package comment
+package models
 
 import (
 	"time"
@@ -9,7 +9,7 @@ import (
 
 const TableNameComment = "comments"
 
-type Repository struct {
+type Comment struct {
 	gorm.Model
 	ID        	uuid.UUID      `gorm:"column:id;primaryKey;default:uuid_generate_v4()"`
 	IP        	string         `gorm:"column:ip"`
@@ -21,23 +21,6 @@ type Repository struct {
 	UpdatedAt   *time.Time     `gorm:"column:updated_at;default:now()"`
 }
 
-func (r *Repository) TableName() string {
+func (r *Comment) TableName() string {
 	return TableNameComment
-}
-
-func (r *Repository) FromModel() (*Entitie) {
-	if r == nil {
-		return nil
-	}
-
-	return &Entitie{
-		ID:        r.ID,
-		IP:        r.IP,
-		UserName:  r.UserName,
-		Text:      r.Text,
-		ProjectID: r.ProjectID,
-		// Project:   r.Project,
-		CreatedAt: r.CreatedAt,
-		UpdatedAt: r.UpdatedAt,
-	}
 }

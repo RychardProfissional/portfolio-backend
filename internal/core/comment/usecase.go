@@ -3,6 +3,7 @@ package comment
 import (
 	"errors"
 
+	"github.com/RychardProfissional/portfolio-backend/entities"
 	"github.com/google/uuid"
 )
 
@@ -10,7 +11,7 @@ type Usecase struct{
 	DB DB
 }
 
-func (*Usecase) ValidateCreate(comment *Entitie) (*Entitie, error) {
+func (*Usecase) ValidateCreate(comment *entities.Comment) (*entities.Comment, error) {
 	comment.ID = uuid.Nil
 
 	if comment.IP == "" {
@@ -38,11 +39,11 @@ func (*Usecase) ValidateCreate(comment *Entitie) (*Entitie, error) {
 	return comment, nil
 }
 
-func (u *Usecase) Create(comment *Entitie) (*Entitie, error) {
+func (u *Usecase) Create(comment *entities.Comment) (*entities.Comment, error) {
 	return u.DB.Create(comment)	
 }
 
-func (u *Usecase) GetByID(id string) (*Entitie, error) {
+func (u *Usecase) GetByID(id string) (*entities.Comment, error) {
 	return u.DB.GetByID(id)
 }
 
@@ -50,7 +51,7 @@ func (*Usecase) GetByProjectID() {
 	// TODO
 }
 
-func (u *Usecase) ValidateUpdateText(id, ip, text string) (*Entitie, error) {
+func (u *Usecase) ValidateUpdateText(id, ip, text string) (*entities.Comment, error) {
 	commentUUID, err := uuid.Parse(id)
 	if commentUUID == uuid.Nil || err != nil  {
 		return nil, errors.New("commentID invalido")

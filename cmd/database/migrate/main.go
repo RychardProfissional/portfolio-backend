@@ -6,7 +6,7 @@ import (
 
 	"github.com/RychardProfissional/portfolio-backend/config"
 	"github.com/RychardProfissional/portfolio-backend/internal/core/adapters/db"
-	"github.com/RychardProfissional/portfolio-backend/internal/core/comment"
+	"github.com/RychardProfissional/portfolio-backend/models"
 	"github.com/lpernett/godotenv"
 )
 
@@ -17,7 +17,7 @@ func init() {
 func main() {
 	dbconn := db.Connect()
 
-	dbconn.Debug().AutoMigrate(&comment.Repository{})
+	dbconn.Debug().AutoMigrate(&models.Comment{})
 }
 
 func LoadEnv() {

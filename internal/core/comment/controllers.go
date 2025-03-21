@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/RychardProfissional/portfolio-backend/entities"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -11,7 +12,7 @@ import (
 type Controller struct{}
 
 func (*Controller) Create(c *gin.Context) {
-	var comment Entitie
+	var comment entities.Comment
 
 	if err := c.ShouldBindJSON(&comment); err != nil {
 		log.Print("c.ShouldBindJSON: ", err.Error())

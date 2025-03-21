@@ -3,24 +3,27 @@ package comment
 import (
 	"errors"
 
+	"github.com/RychardProfissional/portfolio-backend/entities"
 	"github.com/RychardProfissional/portfolio-backend/internal/core/adapters/db"
+	"github.com/RychardProfissional/portfolio-backend/models"
+	"github.com/RychardProfissional/portfolio-backend/util"
 	"gorm.io/gorm"
 )
 
 type DB struct{}
 
-func (*DB) Create(comment *Entitie) (*Entitie, error) {
-	model := comment.ToModel()
+func (*DB) Create(comment *entities.Comment) (*entities.Comment, error) {
+	model := util.CommentToModel(comment)
 	res := db.Conn.Create(&model)
 	if res.Error != nil {
 		return nil, res.Error
 	}
 
-	return model.FromModel(), nil
+	return util.CommentFromModel(model), nil
 }
 
-func (*DB) GetByID(id string) (*Entitie, error){
-	var model *Repository
+func (*DB) GetByID(id string) (*entities.Comment, error){
+	var model *models.Comment
 	res := db.Conn.Where("id = ?", id).First(&model)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
@@ -29,7 +32,7 @@ func (*DB) GetByID(id string) (*Entitie, error){
 		return nil, res.Error
 	}
 
-	return model.FromModel(), nil
+	return util.CommentFromModel(model), nil
 }
 
 func (*DB) UpdateText(id string, text *string) (error) {
@@ -41,7 +44,7 @@ func (*DB) UpdateText(id string, text *string) (error) {
 	}
 
 	res := db.Conn.
-		Model(&Repository{}).
+		Model(&models.Comment{}).
 		Where("id = ?", id).
 		Update("text", *text)
 	if res.Error != nil {
@@ -52,5 +55,5 @@ func (*DB) UpdateText(id string, text *string) (error) {
 }
 
 func (*DB) Delete(id string) error {
-	return db.Conn.Unscoped().Where("id = ?", id).Delete(Repository{}).Error;
+	return db.Conn.Unscoped().Where("id = ?", id).Delete(models.Comment{}).Error;
 }
