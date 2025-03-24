@@ -17,7 +17,7 @@ type Project struct {
 	Links       []string           `gorm:"column:links;type:[]text"`
 	Description string             `gorm:"column:description"`
 	Image       string             `gorm:"column:image"`   
-	Comments    []Comment `gorm:"foreignKey:ProjectID;references:ID"`  
+	Comments    []*Comment         `gorm:"foreignKey:ProjectID;references:ID"`  
 	InitDate    time.Time          `gorm:"column:init_date"`
 	FinishDate  time.Time          `gorm:"column:finish_date"`
 	CreatedAt   *time.Time         `gorm:"column:created_at;default:now()"`
