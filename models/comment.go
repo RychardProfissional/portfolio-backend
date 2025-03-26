@@ -16,7 +16,7 @@ type Comment struct {
 	UserName  	string         `gorm:"column:user_name"`
 	Text      	string         `gorm:"column:text"`
 	ProjectID	*uuid.UUID     `gorm:"column:project_id"`
-	// Project     project.Entity `gorm:"column:project"` // TODO
+	Project     Project		   
 	CreatedAt   *time.Time     `gorm:"column:created_at;default:now()"`
 	UpdatedAt   *time.Time     `gorm:"column:updated_at;default:now()"`
 }

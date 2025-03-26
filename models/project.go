@@ -13,8 +13,8 @@ type Project struct {
 	gorm.Model
 	ID      	uuid.UUID          `gorm:"column:id;primaryKey;default:uuid_generate_v4()"`
 	Title       string             `gorm:"column:title"`
-	Categories	[]string           `gorm:"column:categories;type:[]text"`
-	Links       []string           `gorm:"column:links;type:[]text"`
+	Categories	[]string           `gorm:"column:categories;type:jsonb;serializer:json"`
+	Links       []string           `gorm:"column:links;type:jsonb;serializer:json"`
 	Description string             `gorm:"column:description"`
 	Image       string             `gorm:"column:image"`   
 	Comments    []*Comment         `gorm:"foreignKey:ProjectID;references:ID"`  

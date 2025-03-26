@@ -2,6 +2,7 @@ package project
 
 import (
 	"errors"
+	"log"
 
 	"github.com/RychardProfissional/portfolio-backend/entities"
 	"github.com/RychardProfissional/portfolio-backend/internal/core/adapters/db"
@@ -13,7 +14,7 @@ import (
 
 type DB struct{}
 
-func (*DB) Create(project *entities.Project) (*entities.Project, error) {
+func (r *DB) Create(project *entities.Project) (*entities.Project, error) {
 	model := util.ProjectToModel(project)
 	res := db.Conn.Create(&model)
 	if res.Error != nil {
@@ -23,8 +24,8 @@ func (*DB) Create(project *entities.Project) (*entities.Project, error) {
 	return util.ProjectFromModel(model), nil
 }
 
-func (*DB) GetByID(id string) (*entities.Project, error) {
-	var model *models.Project
+func (r *DB) GetByID(id string) (*entities.Project, error) {
+	var model models.Project
 	res := db.Conn.Where("id = ?", id).First(&model)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
@@ -33,22 +34,30 @@ func (*DB) GetByID(id string) (*entities.Project, error) {
 		return nil, res.Error
 	}
 
-	return util.ProjectFromModel(model), nil
+	return util.ProjectFromModel(&model), nil
 }
 
-func (*DB) Update(project *entities.Project) (*entities.Project, error) {
+func (r *DB) Update(project *entities.Project) (*entities.Project, error) {
 	if project.ID == uuid.Nil {
 		return nil, errors.New("id não passado")
 	}
 	var model models.Project
-	model.ID = project.ID
+	res := db.Conn.Where("id = ?", project.ID.String()).First(&model)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
 	model.Description = project.Description
 	model.Categories = project.Categories
+	model.Image = project.Image
 	model.Title = project.Title
 	model.FinishDate = project.FinishDate
 	model.InitDate = project.InitDate
 
-	res := db.Conn.Save(&model)
+	log.Print(project.Description)
+	log.Print(model.Description)
+
+	res = db.Conn.Save(&model)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -56,6 +65,6 @@ func (*DB) Update(project *entities.Project) (*entities.Project, error) {
 	return util.ProjectFromModel(&model), nil
 }
 
-func (*DB) Delete(id string) error {
+func (r *DB) Delete(id string) error {
 	return db.Conn.Unscoped().Where("id = ?", id).Delete(models.Project{}).Error;
 }

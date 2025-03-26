@@ -63,7 +63,11 @@ func (u *Usecase) ValidateUpdate(id string, project *entities.Project) (*entitie
 		return nil, errors.New("data final igual a zero")
 	}
 
-	return u.DB.GetByID(id)
+	if _, err := u.DB.GetByID(id); err != nil {
+		return nil, errors.New("registro não existe")
+	}
+
+	return project, nil 
 }
 
 func (u *Usecase) Update(project *entities.Project) (*entities.Project, error) {

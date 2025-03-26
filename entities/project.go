@@ -13,9 +13,9 @@ type Project struct {
 	Links       []string   `json:"links"`
 	Description string     `json:"description"`
 	Image       string     `json:"image"`
-	Comments    []*Comment `json:"comments"`
+	Comments    []*Comment `json:"comments,omitempty"`
 	InitDate    time.Time  `json:"init_date"`
 	FinishDate  time.Time  `json:"finish_date"`
-	CreatedAt   *time.Time `json:"created_atdefault"`
-	UpdatedAt   *time.Time `json:"updated_atdefault"`
+	CreatedAt   *time.Time `json:"created_at"`
+	UpdatedAt   *time.Time `json:"updated_at"`
 }

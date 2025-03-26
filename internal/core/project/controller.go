@@ -13,7 +13,6 @@ type Controller struct{}
 
 func (*Controller) Create(c *gin.Context) {
 	var project entities.Project
-	
 	if err := c.ShouldBindJSON(&project); err != nil {
 		log.Print("c.ShouldBindJSON: ", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": "parametros invalidos"})
@@ -21,7 +20,6 @@ func (*Controller) Create(c *gin.Context) {
 	}
 
 	usecase := Usecase{}
-
 	validated, err := usecase.ValidateCreate(&project); 
 	if err != nil {
 		log.Print("usecase.ValidateCreate: ", err.Error())
@@ -88,7 +86,8 @@ func (*Controller) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest,  gin.H{"error": err.Error()})
 		return
 	}
-
+	
+	validated.ID = projectUUID
 	updated, err := usecase.Update(validated)
 	if err != nil {
 		log.Print("usecase.Update: ", err.Error())

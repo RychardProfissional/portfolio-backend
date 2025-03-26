@@ -8,6 +8,6 @@ func (*Router) Set(g *gin.RouterGroup)  {
 	controller := Controller{}
 	g.POST("/", controller.Create)
 	g.GET("/by_id/:id", controller.GetByID)
-	g.PATCH("/:id", controller.Update)
+	g.PUT("/:id", controller.Update)
 	g.DELETE("/:id", controller.Delete)
 }

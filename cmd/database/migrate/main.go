@@ -17,6 +17,7 @@ func init() {
 func main() {
 	dbconn := db.Connect()
 
+	dbconn.Debug().AutoMigrate(&models.Project{})
 	dbconn.Debug().AutoMigrate(&models.Comment{})
 }
 

@@ -6,7 +6,7 @@ type Http struct{}
 
 func (*Http) Gin() *gin.Engine {
 	
-	gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.DebugMode)
 	router := gin.New()
 	router.RedirectTrailingSlash = true
 
