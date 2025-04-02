@@ -63,7 +63,27 @@ func (*Controller) GetByID(c *gin.Context) {
 } 
 
 func (*Controller) GetByProjectID(c *gin.Context) {
-	// TODO
+	projectID := c.Param("project_id")
+	projectUUID, err := uuid.Parse(projectID)
+	if projectUUID == uuid.Nil || err != nil  {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "project_id invalido"})
+		return
+	}
+
+	usecase := Usecase{}
+	comments, err := usecase.GetByProjectID(projectID)
+	if err != nil {
+		log.Print("usecase.GetByProjectID: ", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "erro ao obter registros no banco de dados"})
+		return
+	}
+
+	if comments == nil {
+		c.JSON(http.StatusNoContent, nil)
+		return
+	}
+
+	c.JSON(http.StatusOK, comments)
 } 
 
 func (*Controller) UpdateText(c *gin.Context) {
